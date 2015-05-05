@@ -9,11 +9,16 @@ angular.module('contextcommentsApp')
 
 	        	templateUrl: 'app/article/article.html',
         		controller: function() {}
-	    },
+	     },
 
         	"content@article": { 
+<<<<<<< HEAD
         		templateUrl: "app/article/content/content.html  ",
         		controller: 'ContentContrl'
+=======
+        		templateUrl: "app/article/content/content.html",
+        		controller: 'contentCtrl'
+>>>>>>> Implement ability to capture highlighted text
         },
         	"comment@article": { 
         		templateUrl: "app/article/comment/comment.html",
