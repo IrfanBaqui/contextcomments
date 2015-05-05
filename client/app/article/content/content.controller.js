@@ -29,8 +29,45 @@ angular.module('contextcommentsApp')
 		$scope.highlight = function(e) {
 		    $scope.t = (document.all) ? document.selection.createRange().text : document.getSelection();
 		    console.log($scope.t.toString());
+        $scope.hl('yellow');
 		}
 
 		document.onmouseup = $scope.highlight;
 		if (!document.all) document.captureEvents(Event.MOUSEUP);
+
+    var range, sel = window.getSelection();
+
+    $scope.makeEditableAndHighlight = function(colour) {
+      if (sel.rangeCount && sel.getRangeAt) {
+          range = sel.getRangeAt(0);
+      }
+      document.designMode = "on";
+      if (range) {
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+      // Use HiliteColor since some browsers apply BackColor to the whole block
+      if (!document.execCommand("HiliteColor", false, colour)) {
+          document.execCommand("BackColor", false, colour);
+      }
+      document.designMode = "off";
+    }
+
+    $scope.hl = function(colour) {
+      var range;
+      if (window.getSelection) {
+          // IE9 and non-IE
+          try {
+              if (!document.execCommand("BackColor", false, colour)) {
+                  $scope.makeEditableAndHighlight(colour);
+              }
+          } catch (ex) {
+              $scope.makeEditableAndHighlight(colour)
+          }
+      } else if (document.selection && document.selection.createRange) {
+          // IE <= 8 case
+          range = document.selection.createRange();
+          range.execCommand("BackColor", false, colour);
+      }
+    }
 	});
